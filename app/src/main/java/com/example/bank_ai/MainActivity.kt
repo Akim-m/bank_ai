@@ -8,6 +8,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.bank_ai.databinding.ActivityMainBinding
+import org.tensorflow.lite.InterpreterApi
+import org.tensorflow.lite.InterpreterApi.Options.TfLiteRuntime
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_sms
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_sms, R.id.navigation_ocr
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

@@ -29,4 +29,10 @@
         android:label="@string/title_sms"
         tools:layout="@layout/fragment_sms" />
 
+    <fragment
+        android:id="@+id/navigation_ocr"
+        android:name="com.example.bank_ai.ui.ocr.OcrFragment"
+        android:label="@string/title_ocr"
+        tools:layout="@layout/fragment_ocr" />
+
 </navigation>

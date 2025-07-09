@@ -27,11 +27,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         viewBinding = true
@@ -59,4 +59,15 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // ML Kit for OCR
+    implementation("com.google.mlkit:text-recognition:16.0.0")
+    implementation("com.google.mlkit:text-recognition-chinese:16.0.0")
+    implementation("com.google.mlkit:text-recognition-devanagari:16.0.0")
+    implementation("com.google.mlkit:text-recognition-japanese:16.0.0")
+    implementation("com.google.mlkit:text-recognition-korean:16.0.0")
+    
+    // ML Kit coroutines support
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
+    implementation("com.google.mediapipe:tasks-genai:0.10.24")
 }

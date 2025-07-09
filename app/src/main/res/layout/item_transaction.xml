@@ -23,7 +23,7 @@
             android:background="@drawable/bg_transaction_icon"
             android:padding="8dp"
             android:src="@drawable/ic_transaction"
-            android:tint="@color/white" />
+            app:tint="@color/white" />
 
         <LinearLayout
             android:layout_width="0dp"

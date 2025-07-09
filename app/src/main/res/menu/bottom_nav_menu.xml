@@ -21,4 +21,9 @@
         android:icon="@drawable/ic_sms_black_24dp"
         android:title="@string/title_sms" />
 
+    <item
+        android:id="@+id/navigation_ocr"
+        android:icon="@drawable/ic_camera"
+        android:title="@string/title_ocr" />
+
 </menu>

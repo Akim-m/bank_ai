@@ -1,5 +1,6 @@
 package com.example.bank_ai.service
 
+import com.google.android.gms.tflite.java.TfLite
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -8,7 +9,7 @@ class LiteRTService {
     
     private var modelLoaded = false
     private var modelPath: String? = null
-    
+
     
     suspend fun loadModel(modelPath: String): Boolean = withContext(Dispatchers.IO) {
         try {

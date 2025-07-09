@@ -1,11 +1,16 @@
 package com.example.bank_ai.ui.home
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,7 +33,7 @@ class HomeFragment : Fragment() {
         
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        
+
         setupRecyclerView()
         setupObservers()
         setupClickListeners()
@@ -53,38 +58,28 @@ class HomeFragment : Fragment() {
                 binding.chatRecyclerView.smoothScrollToPosition(messages.size - 1)
             }
         }
-        
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             binding.sendButton.isEnabled = !isLoading
             binding.messageInput.isEnabled = !isLoading
-            if (isLoading) {
-                binding.statusText.text = "AI is thinking..."
-            } else {
-                binding.statusText.text = "Online"
-            }
-        }
-        
-        viewModel.modelLoaded.observe(viewLifecycleOwner) { loaded ->
-            if (!loaded) {
-                binding.messageInput.hint = "Model not loaded. Please try again."
-                binding.statusText.text = "Offline"
-            }
         }
     }
     
     private fun setupClickListeners() {
         binding.sendButton.setOnClickListener {
-            sendMessage()
-        }
-        
-        binding.clearChatButton.setOnClickListener {
-            viewModel.clearChat()
-            Toast.makeText(context, "Chat cleared", Toast.LENGTH_SHORT).show()
+            if (hasStoragePermission()) {
+                sendMessage()
+            } else {
+                requestStoragePermission()
+            }
         }
         
         binding.messageInput.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEND) {
-                sendMessage()
+                if (hasStoragePermission()) {
+                    sendMessage()
+                } else {
+                    requestStoragePermission()
+                }
                 true
             } else {
                 false
@@ -97,6 +92,21 @@ class HomeFragment : Fragment() {
         if (message.isNotEmpty()) {
             viewModel.sendMessage(message)
             binding.messageInput.text?.clear()
+        }
+    }
+
+    private fun hasStoragePermission(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            true // No permission needed for Downloads on Android 13+
+        } else {
+            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+        }
+    }
+
+    private fun requestStoragePermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1001)
+            Toast.makeText(requireContext(), "Please grant storage permission to use the AI chat.", Toast.LENGTH_LONG).show()
         }
     }
 
